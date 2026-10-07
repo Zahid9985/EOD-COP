@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Counselor Leads Form</title>
+    <link rel="icon" type="image/png" href="search.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css?v=28" />
+  </head>
+  <body>
+    <!-- MAIN FORM PAGE -->
+    <div class="container" id="mainPage">
+      <div class="form-card">
+        <div class="top-logo">
+          <img src="logo.jpeg" alt="Logo" />
+        </div>
+
+        <h1>Counselor Leads Form</h1>
+        <p class="subtitle">Manage and organize counselor lead details</p>
+
+        <div class="top-form">
+          <div class="input-group">
+            <label>Counselor Name</label>
+                <select id="counselorName" required>
+                <option value="">Select Counselor</option>
+                <option>Anuska Sarkar</option>
+                <option>Kamalika Mukherjee</option>
+                <option>Keya Das</option>
+                <option>Madhuri Poddar</option>
+                <option>Rajda Khatoon</option>
+                <option>Ranjana Ghosh</option>
+                <option>Sabana Khatun</option>
+                <option>Sangeeta Dikshit</option>
+                <option>Soma Aich</option>
+                <option>Sumitra Saha</option>
+                <option>Sunny Dey</option>
+                <option>Manisha Guha</option>
+                <option>Sujata Debnath</option>
+                <option>Sudipa Bapari</option>
+                <option>Bidisha Saha</option>
+                <option>Triparna Nandy</option>
+
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>Number of Leads</label>
+            <input
+              type="number"
+              id="leadCount"
+              placeholder="Enter number of leads"
+              min="1"
+            />
+          </div>
+
+          <button id="generateBtn">Generate Form</button>
+        </div>
+
+        <div id="leadsContainer"></div>
+
+        <button class="submit-btn" id="submitBtn">Submit Details</button>
+      </div>
+    </div>
+
+    <!-- SEPARATE EOD SECTION (visible card) -->
+    <div class="eod-separate-card">
+      <h2>EOD Report</h2>
+      <p class="eod-section-note">One EOD a day — keep it chill, submit once only </p>
+      <button type="button" class="eod-btn eod-separate-btn" id="openEodBtn">Open EOD Report</button>
+    </div>
+
+    <!-- SUMMARY PAGE -->
+    <div class="summary-page" id="summaryPage">
+      <div class="summary-card">
+        <!-- <img id="summaryLogo" class="summary-logo" src="" alt="Logo"> -->
+
+        <h1>Form Submitted Successfully</h1>
+
+        <img class="success-gif" src="Party Popper.gif" alt="Success Celebration" />
+
+        <h2 id="summaryCounselor"></h2>
+
+        <button class="back-btn" id="backBtn">← Back</button>
+      </div>
+    </div>
+
+    <!-- EOD REPORT FORM -->
+    <div class="eod-page" id="eodPage" aria-hidden="true">
+      <div class="eod-card form-card">
+        <div class="eod-head">
+          <div>
+            <h1>EOD Report</h1>
+          </div>
+          <button type="button" class="eod-close" id="closeEodBtn" aria-label="Close EOD report">×</button>
+        </div>
+
+        <div id="eodHalfNotice" class="eod-half-notice" style="display:none">Marked as half shift — this will be noted in the report</div>
+
+        <div class="eod-grid">
+          <div class="input-group">
+            <label for="eodCounselorName">Name of Employee <span class="required-star">*</span></label>
+            <select id="eodCounselorName" name="counselorName" required>
+              <option value="">Select Counselor</option>
+              <option>Anuska Sarkar</option>
+              <option>Kamalika Mukherjee</option>
+              <option>Keya Das</option>
+              <option>Madhuri Poddar</option>
+              <option>Rajda Khatoon</option>
+              <option>Ranjana Ghosh</option>
+              <option>Sabana Khatun</option>
+              <option>Sangeeta Dikshit</option>
+              <option>Soma Aich</option>
+              <option>Sumitra Saha</option>
+              <option>Sunny Dey</option>
+              <option>Manisha Guha</option>
+              <option>Sujata Debnath</option>
+              <option>Sudipa Bapari</option>
+              <option>Triparna Nandy</option>
+              <option>Bidisha Saha</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="totalDialledNumber">Total Dialled Number <span class="required-star">*</span></label>
+            <input type="number" id="totalDialledNumber" name="totalDialledNumber" min="0" step="1" placeholder="Enter total dialled number" required />
+          </div>
+
+          <div class="input-group">
+            <label for="totalConnectedCall">Total Connected Call <span class="required-star">*</span></label>
+            <input type="number" id="totalConnectedCall" name="totalConnectedCall" min="0" step="1" placeholder="Enter total connected call" required />
+          </div>
+
+          <div class="input-group">
+            <label for="totalTalkTime">Total Talk Time (minutes) <span class="required-star">*</span></label>
+            <input type="number" id="totalTalkTime" name="totalTalkTime" min="0" step="1" placeholder="Enter minutes" required />
+          </div>
+
+          <div class="input-group">
+            <label for="avgCallDuration">Avg Call Duration (seconds) <span class="required-star">*</span></label>
+            <input type="number" id="avgCallDuration" name="avgCallDuration" min="0" step="1" placeholder="Enter seconds" required />
+          </div>
+
+          <div class="input-group">
+            <label for="totalLeads">Total Number Of Leads <span class="required-star">*</span></label>
+            <input type="number" id="totalLeads" name="totalLeads" min="0" step="1" placeholder="Total Number of Leads" required />
+          </div>
+
+          <div class="input-group full-width">
+            <label for="eodFileUpload">File Upload <span class="required-star">*</span></label>
+            <label class="file-dropzone" for="eodFileUpload">
+              <input type="file" id="eodFileUpload" name="eodFileUpload" accept=".pdf,.png,.jpg,.jpeg,.doc,.docx" required />
+              <span class="file-dropzone-icon">⇪</span>
+              <span class="file-dropzone-copy">
+                <strong>Drop or choose a file</strong>
+                <span>Upload your EOD proof, call sheet, or screenshot</span>
+              </span>
+              <span class="file-dropzone-name" id="eodFileName">No file selected</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="eod-actions">
+          <p class="eod-note" id="eodNote">One-and-done — drop your EOD once a day</p>
+          <button type="button" class="submit-btn eod-submit-btn" id="submitEodBtn">Submit EOD Report</button>
+        </div>
+      </div>
+    </div>
+    <!-- CUSTOM ALERT -->
+
+    <div class="custom-alert" id="customAlert">
+      <div class="alert-box">
+        <div class="alert-icon">!</div>
+
+        <h2>Error</h2>
+
+        <p id="alertMessage">Something went wrong</p>
+
+        <button id="closeAlert">OK</button>
+      </div>
+    </div>
+
+    <div class="submit-loader" id="submitLoader" aria-live="polite" aria-busy="true">
+      <div class="loader-box">
+        <div class="spinner"></div>
+        <p>Submitting details...</p>
+      </div>
+    </div>
+
+    <script src="script.js?v=27"></script>
+    <script src="eod-script.js?v=16"></script>
+     
+  </body>
+</html>
