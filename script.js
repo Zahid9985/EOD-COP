@@ -2650,69 +2650,6 @@ async function submitLeadsToSheet(formData) {
   return { status: "sent" };
 }
 
-function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function checkLeadSubmission(submissionId) {
-  return new Promise((resolve, reject) => {
-    const callbackName = `leadSubmissionCallback_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-    const script = document.createElement("script");
-    const timeout = window.setTimeout(() => {
-      cleanup();
-      reject(new Error("Sheet verification timed out."));
-    }, 10000);
-
-    function cleanup() {
-      window.clearTimeout(timeout);
-      delete window[callbackName];
-      script.remove();
-    }
-
-    window[callbackName] = (result) => {
-      cleanup();
-      resolve(result);
-    };
-
-    const query = new URLSearchParams({
-      action: "checkLeadSubmission",
-      submissionId,
-      callback: callbackName,
-      cacheBust: Date.now().toString()
-    });
-    const verifyUrl = `${LEADS_SHEET_URL}?${query.toString()}`;
-
-    script.onerror = () => {
-      cleanup();
-      reject(new Error(`Could not verify the sheet submission. Open this test URL in your browser. If it does not show the API response, redeploy Apps Script as a web app for Anyone: ${verifyUrl}`));
-    };
-
-    script.src = verifyUrl;
-    document.body.appendChild(script);
-  });
-}
-
-async function verifyLeadSubmission(submissionId) {
-  for (let attempt = 0; attempt < 5; attempt += 1) {
-    await wait(attempt === 0 ? 1200 : 1800);
-    const result = await checkLeadSubmission(submissionId);
-
-    if (result?.submitted === true || result?.exists === true || result?.count > 0) {
-      return result;
-    }
-  }
-
-  throw new Error("The sheet did not show the submitted leads. Check the Apps Script deployment, spreadsheet ID, and sheet tab name.");
-}
-
-function createSubmissionId() {
-  if (window.crypto?.randomUUID) {
-    return window.crypto.randomUUID();
-  }
-
-  return `lead-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-}
-
 closeAlert.addEventListener("click", () => {
   customAlert.style.display = "none";
 });
@@ -3325,7 +3262,6 @@ submitBtn.addEventListener("click", async () => {
 
     const leadBoxes = document.querySelectorAll(".lead-box");
     const formData = [];
-    const submissionId = createSubmissionId();
 
     for (const box of leadBoxes) {
       const studentName = getFieldValue(box, ".studentName");
@@ -3446,15 +3382,14 @@ submitBtn.addEventListener("click", async () => {
         followUpDate: seniorSupport === "No" ? followUpNoDate || "" : followUpDate || "",
         followUpTime: followUpTime || "",
         followUp: seniorSupport === "No" ? followUpNo || "" : "",
-        remarks,
-        submissionId
+        remarks
       });
     }
 
     showLoader();
 
     const minimumLoaderTime = new Promise((resolve) => setTimeout(resolve, 700));
-    const request = submitLeadsToSheet(formData).then(() => verifyLeadSubmission(submissionId));
+    const request = submitLeadsToSheet(formData);
 
     await Promise.all([request, minimumLoaderTime]);
 
