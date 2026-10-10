@@ -17,8 +17,9 @@ const LEADS_HEADERS = [
   "Follow Up Date",
   "Follow Up Time",
   "Follow Up",
-  "Remarks",
-  "Submission ID"
+  "Counselor Remarks",
+  "Senior Remarks",
+  "Next FollowUP Date"
 ];
 
 function doPost(e) {
@@ -78,10 +79,12 @@ function doPost(e) {
             return value_(lead.followUpTime);
           case "Follow Up":
             return value_(lead.followUp);
-          case "Remarks":
-            return value_(lead.remarks);
-          case "Submission ID":
-            return value_(lead.submissionId);
+          case "Counselor Remarks":
+            return value_(lead.counselorRemarks || lead.remarks);
+          case "Senior Remarks":
+            return "";
+          case "Next FollowUP Date":
+            return value_(lead.nextFollowUpDate);
           default:
             return "";
         }
@@ -116,7 +119,6 @@ function doGet(e) {
   const params = (e && e.parameter) || {};
 
   if (params.action === "debugAppend") {
-    const submissionId = "debug-" + Date.now();
     const sheet = getLeadsSheet_();
     setupLeadHeaders_(sheet);
 
@@ -136,11 +138,11 @@ function doGet(e) {
       "",
       "",
       "Debug append from doGet",
-      submissionId
+      "",
+      ""
     ]);
 
     logLeadEvent_("debug append", {
-      submissionId: submissionId,
       lastRow: sheet.getLastRow()
     });
 
@@ -148,7 +150,6 @@ function doGet(e) {
       status: "success",
       message: "Debug row appended.",
       sheetName: LEADS_SHEET_NAME,
-      submissionId: submissionId,
       lastRow: sheet.getLastRow()
     }, params.callback);
   }
@@ -254,7 +255,7 @@ function hasSubmission_(submissionId) {
   setupLeadHeaders_(sheet);
 
   const headers = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
-  const submissionIdColumn = headers.indexOf("Submission ID") + 1;
+  const submissionIdColumn = headers.indexOf("Submission ID") + 1 || headers.indexOf("SubmissionID") + 1;
 
   if (!submissionIdColumn || sheet.getLastRow() < 2) {
     return false;

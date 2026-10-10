@@ -3382,6 +3382,7 @@ submitBtn.addEventListener("click", async () => {
         followUpDate: seniorSupport === "No" ? followUpNoDate || "" : followUpDate || "",
         followUpTime: followUpTime || "",
         followUp: seniorSupport === "No" ? followUpNo || "" : "",
+        counselorRemarks: remarks,
         remarks
       });
     }
